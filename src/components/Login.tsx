@@ -1,27 +1,24 @@
+// src/components/Login.tsx
 import React, { useState } from "react";
+import { useSession } from "../context/SessionContext";
 
-interface LoginProps {
-  login: (id: number, name: string) => void;
-  nameInputRef: React.RefObject<HTMLInputElement>;
-}
-
-const Login: React.FC<LoginProps> = ({ login, nameInputRef }) => {
+const Login: React.FC = () => {
+  const { login } = useSession();
   const [id, setId] = useState<number | "">("");
   const [name, setName] = useState<string>("");
 
-  const handleLogin = (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleLogin = () => {
     login(Number(id), name);
   };
 
   return (
     <div className="login-container">
       <h2 className="login-title">Sign In</h2>
-      <form onSubmit={handleLogin} className="login-form">
+      <form className="login-form">
         <div className="input-row">
           <div className="input-group">
             <label htmlFor="id" className="login-label">
-              Id
+              ID
             </label>
             <input
               type="number"
@@ -38,15 +35,14 @@ const Login: React.FC<LoginProps> = ({ login, nameInputRef }) => {
             <input
               type="text"
               id="name"
-              ref={nameInputRef}
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="login-input"
             />
           </div>
         </div>
-        <button type="submit" className="login-button">
-          Sign In
+        <button type="button" className="login-button" onClick={handleLogin}>
+          Login
         </button>
       </form>
     </div>

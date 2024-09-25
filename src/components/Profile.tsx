@@ -1,26 +1,16 @@
+// src/components/Profile.tsx
 import React from "react";
+import { useSession } from "../context/SessionContext";
 
-interface User {
-  id: number;
-  name: string;
-}
+const Profile: React.FC = () => {
+  const { session, logout } = useSession();
+  const { loginUser } = session;
 
-interface ProfileProps {
-  user: User;
-  logout: () => void;
-}
-
-const Profile: React.FC<ProfileProps> = ({ user, logout }) => {
   return (
     <div className="profile-container">
-      <h1>
-        Hello, {user.name}! <span className="age">34</span>
-      </h1>
-      <span className="user-name">
-        {user.name} <span className="status">logined</span>
-      </span>
-      <button onClick={logout} className="logout-button">
-        SignOut
+      <h1>Hello, {loginUser?.name}!</h1>
+      <button className="logout-button" onClick={logout}>
+        Logout
       </button>
     </div>
   );

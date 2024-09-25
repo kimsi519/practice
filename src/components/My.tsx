@@ -1,71 +1,52 @@
-import React, { useRef } from "react";
-import Login from "./Login";
+// src/components/My.tsx
+import React, { useState } from "react";
 import Profile from "./Profile";
-interface User {
-  id: number;
-  name: string;
-}
+import Login from "./Login";
+import { useSession } from "../context/SessionContext";
 
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-}
+const My: React.FC = () => {
+  const { session, addCartItem, removeCartItem } = useSession();
+  const { loginUser, cart } = session;
 
-interface Session {
-  loginUser: User | null;
-  cart: CartItem[];
-}
-
-interface MyProps {
-  session: Session;
-  login: (id: number, name: string) => void;
-  logout: () => void;
-  addCartItem: (name: string, price: number) => void;
-  nameInputRef: React.RefObject<HTMLInputElement>;
-  removeCartItem: (itemId: number) => void;
-}
-
-const My: React.FC<MyProps> = ({
-  session,
-  logout,
-  login,
-  removeCartItem,
-  addCartItem,
-  nameInputRef,
-}) => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const priceRef = useRef<HTMLInputElement>(null);
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemPrice, setNewItemPrice] = useState<number | "">("");
 
   const handleAddItem = () => {
-    const name = nameRef.current?.value;
-    const price = priceRef.current?.value;
-
-    if (name && price) {
-      addCartItem(name, parseFloat(price));
-      nameRef.current.value = "";
-      priceRef.current.value = "";
+    if (newItemName && newItemPrice) {
+      addCartItem(newItemName, Number(newItemPrice));
+      setNewItemName("");
+      setNewItemPrice("");
     }
   };
 
   return (
     <div className="my-container">
-      {session.loginUser ? (
-        <Profile user={session.loginUser} logout={logout}></Profile>
-      ) : (
-        <Login login={login} nameInputRef={nameInputRef} />
-      )}
+      {loginUser ? <Profile /> : <Login />}
+
       <ul className="cart-list">
-        {session.cart.map((item) => (
-          <li key={item.id} className="cart-item">
-            {item.name} ({item.price.toLocaleString()}원)
-            <button onClick={() => removeCartItem(item.id)}>DEL</button>
+        {cart.map(({ id, name, price }) => (
+          <li key={id} className="cart-item">
+            {name} ({price.toLocaleString()}원)
+            <button onClick={() => removeCartItem(id)}>DEL</button>
           </li>
         ))}
       </ul>
-      <input type="text" placeholder="Item Name" ref={nameRef} />
-      <input type="number" placeholder="Item Price" ref={priceRef} />
-      <button onClick={handleAddItem}>Add Item</button>
+
+      <div className="add-item-form">
+        <input
+          type="text"
+          placeholder="Item Name"
+          value={newItemName}
+          onChange={(e) => setNewItemName(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Item Price"
+          value={newItemPrice}
+          onChange={(e) => setNewItemPrice(Number(e.target.value))}
+        />
+        <button onClick={handleAddItem}>Add Item</button>
+      </div>
     </div>
   );
 };
