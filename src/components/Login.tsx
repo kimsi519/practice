@@ -1,14 +1,20 @@
 // src/components/Login.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "../context/SessionContext";
-
+import { useCounter } from "../context/CounterContext";
 const Login: React.FC = () => {
   const { login } = useSession();
   const [id, setId] = useState<number | "">("");
   const [name, setName] = useState<string>("");
+  const { increaseCount, decreaseCount } = useCounter();
+
+  useEffect(() => {
+    increaseCount();
+  }, []);
 
   const handleLogin = () => {
     login(Number(id), name);
+    decreaseCount();
   };
 
   return (

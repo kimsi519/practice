@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import My from "./components/My";
 import { SessionProvider } from "./context/SessionContext";
+import { CounterProvider } from "./context/CounterContext";
 import "./App.css";
 
 // User, CartItem, Session 타입 정의
@@ -8,7 +9,9 @@ import "./App.css";
 function App() {
   return (
     <SessionProvider>
-      <My></My>
+      <CounterProvider>
+        <My></My>
+      </CounterProvider>
     </SessionProvider>
   );
 }
