@@ -1,13 +1,7 @@
 // src/context/SessionContext.tsx
-import React, {
-  useReducer,
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useReducer, ReactNode } from "react";
+import { sessionReducer, initialSession } from "../reducer/sessionReducer";
 import { Session, CartItem } from "../types";
-import { sessionReducer, initialSession } from "../reducer/redducer";
 
 interface SessionContextType {
   session: Session;
@@ -17,8 +11,10 @@ interface SessionContextType {
   removeCartItem: (itemId: number) => void;
 }
 
+// Context 생성
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
+// Custom Hook
 export const useSession = () => {
   const context = useContext(SessionContext);
   if (!context) {
@@ -27,11 +23,13 @@ export const useSession = () => {
   return context;
 };
 
+// Provider 생성
 export const SessionProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [session, dispatch] = useReducer(sessionReducer, initialSession);
 
+  // Action 함수들 정의
   const login = (id: number, name: string) => {
     dispatch({ type: "login", payload: { id, name } });
   };

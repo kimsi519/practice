@@ -1,20 +1,18 @@
 // src/components/Login.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSession } from "../context/SessionContext";
-import { useCounter } from "../context/CounterContext";
+
 const Login: React.FC = () => {
   const { login } = useSession();
+  const [name, setName] = useState("");
   const [id, setId] = useState<number | "">("");
-  const [name, setName] = useState<string>("");
-  const { increaseCount, decreaseCount } = useCounter();
-
-  useEffect(() => {
-    increaseCount();
-  }, []);
 
   const handleLogin = () => {
-    login(Number(id), name);
-    decreaseCount();
+    if (name && id) {
+      login(Number(id), name);
+    } else {
+      alert("ID와 이름을 입력해주세요.");
+    }
   };
 
   return (

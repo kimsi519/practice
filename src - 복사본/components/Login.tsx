@@ -1,29 +1,28 @@
+// src/components/Login.tsx
 import React, { useState } from "react";
+import { useSession } from "../context/SessionContext";
 
-interface LoginProps {
-  login: (id: number, name: string) => void;
-}
-
-const Login: React.FC<LoginProps> = ({ login }) => {
+const Login: React.FC = () => {
+  const { login } = useSession();
+  const [name, setName] = useState("");
   const [id, setId] = useState<number | "">("");
-  const [name, setName] = useState<string>("");
 
-  const handleLogin = (event: React.FormEvent) => {
-    event.preventDefault(); //안썻을경우, 새로고침, 상태초기화
-    if (id && name) {
-      //검증
+  const handleLogin = () => {
+    if (name && id) {
       login(Number(id), name);
+    } else {
+      alert("ID와 이름을 입력해주세요.");
     }
   };
 
   return (
     <div className="login-container">
       <h2 className="login-title">Sign In</h2>
-      <form onSubmit={handleLogin} className="login-form">
+      <form className="login-form">
         <div className="input-row">
           <div className="input-group">
             <label htmlFor="id" className="login-label">
-              Id
+              ID
             </label>
             <input
               type="number"
@@ -46,8 +45,8 @@ const Login: React.FC<LoginProps> = ({ login }) => {
             />
           </div>
         </div>
-        <button type="submit" className="login-button">
-          Sign In
+        <button type="button" className="login-button" onClick={handleLogin}>
+          Login
         </button>
       </form>
     </div>
