@@ -1,5 +1,5 @@
 // src/components/My.tsx
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Profile from "./Profile";
 import Login from "./Login";
 import { useSession } from "../context/SessionContext";
@@ -63,6 +63,10 @@ const My: React.FC = () => {
     setHasDirty(true);
   };
 
+  const totalPrice = useMemo(() => {
+    return cart.reduce((sum, item) => sum + item.price, 0);
+  }, [cart]);
+
   return (
     <div className="my-container">
       {loginUser ? <Profile /> : <Login />}
@@ -103,6 +107,10 @@ const My: React.FC = () => {
           </li>
         ))}
       </ul>
+
+      <div>
+        <strong>합계 금액 : {totalPrice}원</strong>
+      </div>
 
       <div className="add-item-form">
         <input
