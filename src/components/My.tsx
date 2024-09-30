@@ -85,13 +85,13 @@ const My: React.FC = () => {
     <div className="my-container">
       {loginUser ? <Profile /> : <Login login={login} />}
 
-      {/* <input
-    type="text"
-    placeholder="Search Items"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="search-input"  // 클래스명 추가
-  /> */}
+      <input
+        type="text"
+        placeholder="Search Items"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input" // 클래스명 추가
+      />
 
       <ul className="cart-list">
         {filteredCartItems.map(({ id, name, price }) => (
