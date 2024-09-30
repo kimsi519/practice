@@ -1,21 +1,18 @@
-import { Session, CartItem, User } from "../types";
+// src/reducer/sessionReducer.ts
+import { Session, CartItem } from "../types";
 
-type ActionType =
-  | { type: "login"; payload: User }
+export const initialSession: Session = {
+  loginUser: null,
+  cart: [],
+};
+
+type Action =
+  | { type: "login"; payload: { id: number; name: string } }
   | { type: "logout" }
   | { type: "addCartItem"; payload: CartItem }
   | { type: "removeCartItem"; payload: number };
 
-export const initialSession: Session = {
-  loginUser: null,
-  cart: [
-    { id: 100, name: "라면", price: 3000 },
-    { id: 101, name: "컵라면", price: 2000 },
-    { id: 200, name: "파", price: 5000 },
-  ],
-};
-
-export const sessionReducer = (state: Session, action: ActionType): Session => {
+export const sessionReducer = (state: Session, action: Action): Session => {
   switch (action.type) {
     case "login":
       return { ...state, loginUser: action.payload };
@@ -26,7 +23,7 @@ export const sessionReducer = (state: Session, action: ActionType): Session => {
     case "removeCartItem":
       return {
         ...state,
-        cart: state.cart.filter((item: CartItem) => item.id !== action.payload),
+        cart: state.cart.filter((item) => item.id !== action.payload),
       };
     default:
       return state;
