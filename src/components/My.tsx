@@ -9,6 +9,10 @@ const My: React.FC = () => {
   const { session, addCartItem, removeCartItem, login } = useSession();
   const { loginUser, cart } = session;
 
+  const containerStyle = loginUser ? "align-right" : "align-left";
+  const inputStyle = loginUser ? "" : "login-input-red";
+  const userNameStyle = loginUser ? "user-name-highlight" : "";
+
   // 검색어 상태
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -82,8 +86,12 @@ const My: React.FC = () => {
   }, [cart]); // cart가 변경될 때만 totalPrice를 다시 계산
 
   return (
-    <div className="my-container">
-      {loginUser ? <Profile /> : <Login login={login} />}
+    <div className={`my-container ${containerStyle}`}>
+      {loginUser ? (
+        <Profile className={userNameStyle} />
+      ) : (
+        <Login login={login} inputClassName={inputStyle} />
+      )}
 
       <input
         type="text"
