@@ -1,11 +1,11 @@
 // src/components/My.tsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo,useCallback, } from "react";
 import Profile from "./Profile";
 import Login from "./Login";
 import { useSession } from "../context/SessionContext";
 
 const My: React.FC = () => {
-  const { session, addCartItem, removeCartItem } = useSession();
+  const { session, addCartItem, removeCartItem,login } = useSession();
   const { loginUser, cart } = session;
 
   const [newItemName, setNewItemName] = useState("");
@@ -71,7 +71,7 @@ const My: React.FC = () => {
 
   return (
     <div className="my-container">
-      {loginUser ? <Profile /> : <Login />}
+      {loginUser ? <Profile /> : <Login login={login} />}
 
       <ul className="cart-list">
         {cart.map(({ id, name, price }) => (

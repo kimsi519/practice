@@ -1,7 +1,14 @@
 // src/context/SessionContext.tsx
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
-import { sessionReducer, initialSession } from "../reducer/sessionReducer";
+import React, {
+  useReducer,
+  createContext,
+  useState,
+  useContext,
+  useCallback,
+  ReactNode,
+} from "react";
 import { Session, CartItem } from "../types";
+import { sessionReducer, initialSession } from "../reducer/redducer";
 
 interface SessionContextType {
   session: Session;
@@ -11,10 +18,8 @@ interface SessionContextType {
   removeCartItem: (itemId: number) => void;
 }
 
-// Context 생성
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
-// Custom Hook
 export const useSession = () => {
   const context = useContext(SessionContext);
   if (!context) {
@@ -23,33 +28,31 @@ export const useSession = () => {
   return context;
 };
 
-// Provider 생성
 export const SessionProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [session, dispatch] = useReducer(sessionReducer, initialSession);
 
-  // Action 함수들 정의
-  const login = (id: number, name: string) => {
+  const login = useCallback((id: number, name: string) => {
     dispatch({ type: "login", payload: { id, name } });
-  };
+  },[]);;
 
-  const logout = () => {
+  const logout =useCallback( () => {
     dispatch({ type: "logout" });
-  };
+  },[]);
 
-  const addCartItem = (name: string, price: number) => {
+  const addCartItem = useCallback((name: string, price: number) => {
     const newItem: CartItem = {
       id: session.cart.length + 1,
       name,
       price,
     };
     dispatch({ type: "addCartItem", payload: newItem });
-  };
+  },[session.cart]);
 
-  const removeCartItem = (itemId: number) => {
+  const removeCartItem = useCallback((itemId: number) => {
     dispatch({ type: "removeCartItem", payload: itemId });
-  };
+  },[]);
 
   return (
     <SessionContext.Provider

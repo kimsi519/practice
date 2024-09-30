@@ -1,14 +1,11 @@
-// src/reducer/sessionReducer.ts
 import { Session, CartItem, User } from "../types";
 
-// 액션 타입 정의
 type ActionType =
   | { type: "login"; payload: User }
   | { type: "logout" }
   | { type: "addCartItem"; payload: CartItem }
   | { type: "removeCartItem"; payload: number };
 
-// 초기 상태 설정
 export const initialSession: Session = {
   loginUser: null,
   cart: [
@@ -18,7 +15,6 @@ export const initialSession: Session = {
   ],
 };
 
-// 리듀서 함수 정의
 export const sessionReducer = (state: Session, action: ActionType): Session => {
   switch (action.type) {
     case "login":
@@ -30,7 +26,7 @@ export const sessionReducer = (state: Session, action: ActionType): Session => {
     case "removeCartItem":
       return {
         ...state,
-        cart: state.cart.filter((item) => item.id !== action.payload),
+        cart: state.cart.filter((item: CartItem) => item.id !== action.payload),
       };
     default:
       return state;

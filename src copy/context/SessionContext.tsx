@@ -33,35 +33,26 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [session, dispatch] = useReducer(sessionReducer, initialSession);
 
-  const login = useCallback(
-    (id: number, name: string) => {
-      dispatch({ type: "login", payload: { id, name } });
-    },
-    [session]
-  );
+  const login = useCallback((id: number, name: string) => {
+    dispatch({ type: "login", payload: { id, name } });
+  },[]);;
 
-  const logout = useCallback(() => {
+  const logout =useCallback( () => {
     dispatch({ type: "logout" });
-  }, [session]);
+  },[]);
 
-  const addCartItem = useCallback(
-    (name: string, price: number) => {
-      const newItem: CartItem = {
-        id: session.cart.length + 1,
-        name,
-        price,
-      };
-      dispatch({ type: "addCartItem", payload: newItem });
-    },
-    [session.cart]
-  );
+  const addCartItem = useCallback((name: string, price: number) => {
+    const newItem: CartItem = {
+      id: session.cart.length + 1,
+      name,
+      price,
+    };
+    dispatch({ type: "addCartItem", payload: newItem });
+  },[session.cart]);
 
-  const removeCartItem = useCallback(
-    (itemId: number) => {
-      dispatch({ type: "removeCartItem", payload: itemId });
-    },
-    [session]
-  );
+  const removeCartItem = useCallback((itemId: number) => {
+    dispatch({ type: "removeCartItem", payload: itemId });
+  },[]);
 
   return (
     <SessionContext.Provider

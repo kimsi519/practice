@@ -1,7 +1,9 @@
 // src/App.tsx
-import { SessionProvider } from "./context/SessionContext";
+import React from "react";
 import My from "./components/My";
-import "./App.css";
+import { SessionProvider } from "./context/SessionContext";
+import "./App.css"; // 스타일을 임포트합니다.
+
 function App() {
   return (
     <SessionProvider>

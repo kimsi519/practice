@@ -1,25 +1,25 @@
 // src/components/My.tsx
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo,useCallback, } from "react";
 import Profile from "./Profile";
 import Login from "./Login";
 import { useSession } from "../context/SessionContext";
-import { useDebounce } from "../hooks/useDebounce";
+import { useDebounce } from '../hooks/useDebounce';
 
 const My: React.FC = () => {
-  const { session, addCartItem, removeCartItem, login } = useSession();
+  const { session, addCartItem, removeCartItem,login } = useSession();
   const { loginUser, cart } = session;
 
-  // 검색어 상태
-  const [searchTerm, setSearchTerm] = useState("");
+    // 검색어 상태
+    const [searchTerm, setSearchTerm] = useState('');
 
-  // debounced 검색어
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+    // debounced 검색어
+    const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // 검색된 상품 필터링
-  const filteredCartItems = cart.filter((item) =>
+    // 검색된 상품 필터링
+  const filteredCartItems = cart.filter(item =>
     item.name.includes(debouncedSearchTerm)
   );
-  //아이템추가
+//아이템추가
   const [newItemName, setNewItemName] = useState("");
   const [newItemPrice, setNewItemPrice] = useState<number | "">("");
 
@@ -85,13 +85,13 @@ const My: React.FC = () => {
     <div className="my-container">
       {loginUser ? <Profile /> : <Login login={login} />}
 
-      {/* <input
+      <input
     type="text"
     placeholder="Search Items"
     value={searchTerm}
     onChange={(e) => setSearchTerm(e.target.value)}
     className="search-input"  // 클래스명 추가
-  /> */}
+  />
 
       <ul className="cart-list">
         {filteredCartItems.map(({ id, name, price }) => (

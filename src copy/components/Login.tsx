@@ -1,11 +1,12 @@
 // src/components/Login.tsx
-import React, { useState, memo } from "react";
+import React, { useState,memo  } from "react";
 // import { useSession } from "../context/SessionContext";
 interface LoginProps {
   login: (id: number, name: string) => void;
 }
 
-const Login: React.FC<LoginProps> = memo(({ login }) => {
+const Login: React.FC<LoginProps> = memo(({login}) => {
+  
   const [name, setName] = useState("");
   const [id, setId] = useState<number | "">("");
 
