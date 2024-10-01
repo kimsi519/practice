@@ -1,6 +1,6 @@
 // src/Nav.tsx
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { StyledNavLink, UI } from "./styles";
 const Nav: React.FC = () => {
   return (

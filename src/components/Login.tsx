@@ -6,7 +6,7 @@ interface LoginProps {
   inputClassName?: string;
 }
 
-const Login: React.FC<LoginProps> = memo(({ login, inputClassName }) => {
+const Login: React.FC<LoginProps> = memo(({ login }) => {
   const [name, setName] = useState("");
   const [id, setId] = useState<number | "">("");
 

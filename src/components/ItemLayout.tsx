@@ -1,4 +1,4 @@
-import React, { useState, createContext, useMemo } from "react";
+import React, { useState, createContext, useMemo, useEffect } from "react";
 import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "../context/SessionContext";
 import { CartItem } from "../types";
@@ -31,6 +31,7 @@ const ItemLayout: React.FC = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setSearchParams({ search: e.target.value });
+    console.log(searchParams);
   };
 
   const handleAddItem = () => {
@@ -45,6 +46,25 @@ const ItemLayout: React.FC = () => {
     setSelectedItem(newItem);
     navigate(`/items/${newItem.id}`, { state: { item: newItem } });
   };
+
+  useEffect(() => {
+    if (filteredItems.length > 0) {
+      const firstItem = filteredItems[0];
+      setSelectedItem(firstItem);
+
+      // 현재 URL이 첫 번째 아이템의 상세 페이지가 아니면 네비게이션 수행
+      if (location.pathname !== `/items/${firstItem.id}`) {
+        navigate(`/items/${firstItem.id}`, { state: { item: firstItem } });
+      }
+    } else {
+      setSelectedItem(null);
+      // 아이템이 없으면 아이템 목록 페이지로 이동
+      if (location.pathname !== "/items") {
+        navigate("/items");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm]);
 
   return (
     <ItemContext.Provider value={{ selectedItem, setSelectedItem }}>
@@ -78,7 +98,7 @@ const ItemLayout: React.FC = () => {
         </div>
 
         {/* 오른쪽에 선택된 아이템 상세 정보만 표시 */}
-        <div style={{ flex: 2, marginLeft: 30 }}>
+        <div style={{ flex: 1, marginLeft: 30 }}>
           <Outlet />
         </div>
       </div>

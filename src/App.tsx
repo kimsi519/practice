@@ -4,12 +4,12 @@ import My from "./components/My";
 import "./App.css";
 import Nav from "./Nav";
 import Home from "./components/Home";
-import Login from "./components/Login";
-import Items from "./components/Items";
+// import Login from "./components/Login";
+// import Items from "./components/Items";
 import Item from "./components/Item"; // 아이템 상세 페이지 컴포넌트 임포트
 import NotFound from "./NotFound";
 import LoginWrapper from "./components/LoginWrapper";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ItemLayout from "./components/ItemLayout";
 
 function App() {

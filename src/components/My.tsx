@@ -1,5 +1,5 @@
 // src/components/My.tsx
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo } from "react";
 import Profile from "./Profile";
 import Login from "./Login";
 import { useSession } from "../context/SessionContext";
