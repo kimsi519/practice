@@ -33,6 +33,17 @@ const Item: React.FC = () => {
     }
   }, [session.cart, id, navigate, itemFromState]);
 
+  // 수정된 아이템을 저장
+  const handleUpdateItem = () => {
+    if (editingItem) {
+      updateCartItem(editingItem); // 세션 컨텍스트의 아이템 업데이트
+      context?.setSelectedItem(editingItem);
+      alert("Item updated successfully!");
+    } else {
+      console.error("Failed to update item: item is missing");
+    }
+  };
+
   return (
     <div>
       {editingItem ? (
@@ -62,7 +73,7 @@ const Item: React.FC = () => {
               }
             />
           </div>
-          <button>Save</button>
+          <button onClick={handleUpdateItem}>Save</button>
         </>
       ) : (
         <p>Loading item...</p>

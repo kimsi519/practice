@@ -33,6 +33,19 @@ const ItemLayout: React.FC = () => {
     setSearchParams({ search: e.target.value });
   };
 
+  const handleAddItem = () => {
+    const newItemName = `New Item ${cart.length + 1}`;
+    const newItemPrice = 1000 + cart.length * 100;
+    addCartItem(newItemName, newItemPrice);
+    const newItem: CartItem = {
+      id: cart.length + 1,
+      name: newItemName,
+      price: newItemPrice,
+    };
+    setSelectedItem(newItem);
+    navigate(`/items/${newItem.id}`, { state: { item: newItem } });
+  };
+
   return (
     <ItemContext.Provider value={{ selectedItem, setSelectedItem }}>
       <div style={{ display: "flex" }}>
@@ -61,6 +74,7 @@ const ItemLayout: React.FC = () => {
               </li>
             ))}
           </ul>
+          <button onClick={handleAddItem}>Add Item</button>
         </div>
 
         {/* 오른쪽에 선택된 아이템 상세 정보만 표시 */}
