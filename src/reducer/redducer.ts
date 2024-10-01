@@ -1,4 +1,4 @@
-// src/reducer/sessionReducer.ts
+// src/reducer/reducer.ts
 import { Session, CartItem } from "../types";
 
 export const initialSession: Session = {
@@ -10,7 +10,8 @@ type Action =
   | { type: "login"; payload: { id: number; name: string } }
   | { type: "logout" }
   | { type: "addCartItem"; payload: CartItem }
-  | { type: "removeCartItem"; payload: number };
+  | { type: "removeCartItem"; payload: number }
+  | { type: "updateCartItem"; payload: CartItem }; // 추가된 부분
 
 export const sessionReducer = (state: Session, action: Action): Session => {
   switch (action.type) {
@@ -24,6 +25,13 @@ export const sessionReducer = (state: Session, action: Action): Session => {
       return {
         ...state,
         cart: state.cart.filter((item) => item.id !== action.payload),
+      };
+    case "updateCartItem":
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id ? action.payload : item
+        ),
       };
     default:
       return state;

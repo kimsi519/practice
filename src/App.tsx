@@ -10,6 +10,7 @@ import Item from "./components/Item"; // 아이템 상세 페이지 컴포넌트
 import NotFound from "./NotFound";
 import LoginWrapper from "./components/LoginWrapper";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ItemLayout from "./components/ItemLayout";
 
 function App() {
   return (
@@ -20,9 +21,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginWrapper />} />
           <Route path="/my" element={<My />} />
-          <Route path="/items" element={<Items />} />
-          <Route path="/items/:id" element={<Item />} />{" "}
-          {/* 상세 페이지 경로 설정 */}
+          {/* ItemLayout이 아이템 목록과 선택된 아이템 상세 정보를 처리 */}
+          <Route path="/items" element={<ItemLayout />}>
+            {/* <Route index element={<Items />} /> */}
+            {/* 상세 페이지 경로 설정 */}
+            <Route path=":id" element={<Item />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

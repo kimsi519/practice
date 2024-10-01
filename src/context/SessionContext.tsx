@@ -17,6 +17,7 @@ interface SessionContextType {
   logout: () => void;
   addCartItem: (name: string, price: number) => void;
   removeCartItem: (itemId: number) => void;
+  updateCartItem: (updatedItem: CartItem) => void;
 }
 
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
@@ -99,9 +100,23 @@ export const SessionProvider: React.FC<{ children: ReactNode }> = ({
     [session]
   );
 
+  const updateCartItem = useCallback(
+    (updatedItem: CartItem) => {
+      dispatch({ type: "updateCartItem", payload: updatedItem });
+    },
+    [session]
+  );
+
   return (
     <SessionContext.Provider
-      value={{ session, login, logout, addCartItem, removeCartItem }}
+      value={{
+        session,
+        login,
+        logout,
+        addCartItem,
+        removeCartItem,
+        updateCartItem,
+      }}
     >
       {children}
     </SessionContext.Provider>

@@ -1,30 +1,72 @@
 // src/components/Item.tsx
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useSession } from '../context/SessionContext';
+import React, { useEffect, useState } from "react";
+import {
+  useParams,
+  useNavigate,
+  useOutletContext,
+  useLocation,
+} from "react-router-dom";
+import { ItemContextType } from "./ItemLayout";
+import { CartItem } from "../types";
+import { useSession } from "../context/SessionContext";
 
 const Item: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // URL 경로에서 id 추출
-  const { session } = useSession();
-  const item = session.cart.find((item) => item.id === Number(id)); // 해당 id의 아이템 찾기
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const itemFromState = location.state?.item as CartItem | undefined;
+  const { session, updateCartItem } = useSession();
+  const [editingItem, setEditingItem] = useState<CartItem | null>(null);
+  const context = useOutletContext<ItemContextType>(); // context 가져오기
 
-  if (!item) {
-    return <div>Item not found</div>; // 해당 id의 아이템이 없을 때 처리
-  }
+  useEffect(() => {
+    if (id) {
+      let foundItem = session.cart.find((item) => item.id === Number(id));
+      if (!foundItem && itemFromState) {
+        foundItem = itemFromState;
+      }
+      if (foundItem) {
+        setEditingItem(foundItem);
+      } else {
+        navigate("/items"); // 아이템이 없으면 목록으로 리다이렉트
+      }
+    }
+  }, [session.cart, id, navigate, itemFromState]);
 
   return (
-    <div className="item-details">
-      <h2>Item Details</h2>
-      <p>
-        <strong>ID:</strong> {item.id}
-      </p>
-      <p>
-        <strong>Name:</strong> {item.name}
-      </p>
-      <p>
-        <strong>Price:</strong> {item.price.toLocaleString()}원
-      </p>
-      <Link to="/items">Back to Items</Link> {/* 뒤로가기 링크 */}
+    <div>
+      {editingItem ? (
+        <>
+          <h2>{editingItem.name}</h2>
+          <p>Price: {editingItem.price}원</p>
+          <div>
+            <label>Item Name:</label>
+            <input
+              type="text"
+              value={editingItem.name}
+              onChange={(e) =>
+                setEditingItem({ ...editingItem, name: e.target.value })
+              }
+            />
+          </div>
+          <div>
+            <label>Item Price:</label>
+            <input
+              type="number"
+              value={editingItem.price}
+              onChange={(e) =>
+                setEditingItem({
+                  ...editingItem,
+                  price: Number(e.target.value),
+                })
+              }
+            />
+          </div>
+          <button>Save</button>
+        </>
+      ) : (
+        <p>Loading item...</p>
+      )}
     </div>
   );
 };
